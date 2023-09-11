@@ -26,10 +26,6 @@ const main = async () => {
 
   const amountA = ethers.parseEther("20");
   const amountB = ethers.parseEther("40");
-  // const approvedAmount = ethers.parseEther("100");
-  // const process = await interact
-  //   .connect(liquiditySigner)
-  //   .approve("0xe379874446dd29178e68852992daa80be952c0b3", approvedAmount);
 
   const pro = await interact
     .connect(liquiditySigner)
