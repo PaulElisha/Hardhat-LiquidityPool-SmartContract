@@ -29,14 +29,6 @@ contract LiquidityPool {
 
     mapping(address => LiquidityProvider) public liquidityProvider;
 
-    // function processLiq(add spender, uint amoint)external{
-    //     bool success = mem.approve(spender, amount);
-    //     if(success){
-    //     addLiquidity(aA, aB);
-    //     }
-    //     emit ApproveFailed(spender, amount)
-    // }
-
     function addLiquidity(uint256 _amountA, uint256 _amountB) external {
         mem.transferFrom(msg.sender, address(this), _amountA);
         sub.transferFrom(msg.sender, address(this), _amountB);
@@ -46,6 +38,18 @@ contract LiquidityPool {
         LiquidityProvider storage _provider = liquidityProvider[msg.sender];
         _provider.amountA += _amountA;
         _provider.amountB += _amountB;
+    }
+
+    function removeLiquidity(uint256 _amountA, uint256 _amountB) external {
+        require(provider.amountA > _amountA && provider.amountB > _amountB, "Insufficient Balance");
+        mem.transfer(msg.sender, _amountA);
+        sub.transfer(msg.sender, _amountB);
+        totalReserveA-= _amountA;
+        totalReserveB-= _amountB;
+        totalReserve = totalReserveA * totalReserveB;
+        LiquidityProvider storage _provider = liquidityProvider[msg.sender];
+        _provider.amountA -= _amountA;
+        _provider.amountB -= _amountB;
     }
 
     function swapTokenA(address to, uint256 amount) external{
